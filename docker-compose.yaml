@@ -1,0 +1,11 @@
+  services:
+      seq-debug:
+        image: datalust/seq:2024.3
+        container_name: seq-debug
+        environment:
+          - TZ=Europe/Amsterdam
+          - ACCEPT_EULA=Y
+        ports:
+          - 5340:80
+          - 5341:5341
+        restart: unless-stopped

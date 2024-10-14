@@ -32,7 +32,7 @@ namespace OpenTelemetryTestingDefaultIlogger
                     logging.IncludeScopes = true;
                     logging.AddOtlpExporter(options =>
                     {
-                        options.Endpoint = new Uri("http://localhost:5431/ingest/otlp/v1/logs");
+                        options.Endpoint = new Uri("http://localhost:5341/ingest/otlp/v1/logs");
                         options.Protocol = OpenTelemetry.Exporter.OtlpExportProtocol.HttpProtobuf;
                     })
                     .AddConsoleExporter(); 
@@ -51,11 +51,14 @@ namespace OpenTelemetryTestingDefaultIlogger
                     //metrics.AddHttpClientInstrumentation();
                     //metrics.AddRuntimeInstrumentation();
                     //metrics.AddProcessInstrumentation();
-                    metrics.AddOtlpExporter(options =>
-                    {
-                        options.Endpoint = new Uri("http://localhost:5431/ingest/otlp");
-                        options.Protocol = OpenTelemetry.Exporter.OtlpExportProtocol.HttpProtobuf;
-                    })
+                    //
+                    // METRICS ARE NOT SUPPORTED IN SEQ 
+                    //
+                    //metrics.AddOtlpExporter(options =>
+                    //{
+                    //    options.Endpoint = new Uri("http://localhost:5341/ingest/otlp/v1/?????");
+                    //    options.Protocol = OpenTelemetry.Exporter.OtlpExportProtocol.HttpProtobuf;
+                    //})
                     .AddConsoleExporter();
                 })
                 .WithTracing(tracing =>
@@ -70,7 +73,7 @@ namespace OpenTelemetryTestingDefaultIlogger
                     //tracing.AddHttpClientInstrumentation();
                     tracing.AddOtlpExporter(options =>
                     {
-                        options.Endpoint = new Uri("http://localhost:5431/ingest/otlp");
+                        options.Endpoint = new Uri("http://localhost:5341/ingest/otlp/v1/traces");
                         options.Protocol = OpenTelemetry.Exporter.OtlpExportProtocol.HttpProtobuf;
                     })
                     .AddConsoleExporter();

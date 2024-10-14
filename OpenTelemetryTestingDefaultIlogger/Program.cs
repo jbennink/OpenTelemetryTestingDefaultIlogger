@@ -15,19 +15,9 @@ namespace OpenTelemetryTestingDefaultIlogger
             // Add services to the container.
             builder.Services.AddLogging(builder =>
             {
-                /* This is supposed to work without AddSeq()  as shown in this post:
-                 * https://blog.datalust.co/adding-http-protobuf-support-to-opentelemetry-log-ingestion/
-                 * but is dosn't work for logging
-                 * 
+                //builder.ClearProviders();
                 builder.AddOpenTelemetry(logging =>
                 {
-                    logging.SetResourceBuilder(
-                        ResourceBuilder.CreateEmpty()
-                            .AddService(WeatherApiMetrics.ServiceName)
-                            .AddAttributes(new Dictionary<string, object>
-                            {
-                                ["deployment.environment"] = "development"
-                            }));
                     logging.IncludeFormattedMessage = true;
                     logging.IncludeScopes = true;
                     logging.AddOtlpExporter(options =>
@@ -35,17 +25,15 @@ namespace OpenTelemetryTestingDefaultIlogger
                         options.Endpoint = new Uri("http://localhost:5341/ingest/otlp/v1/logs");
                         options.Protocol = OpenTelemetry.Exporter.OtlpExportProtocol.HttpProtobuf;
                     })
-                    .AddConsoleExporter(); 
+                    .AddConsoleExporter();
                 });
-                */
-                builder.AddSeq();
             });
 
             builder.Services.AddOpenTelemetry()
                 .ConfigureResource(r => r.AddService(WeatherApiMetrics.ServiceName))
                 .WithMetrics(metrics =>
                 {
-                    metrics.AddMeter(WeatherApiMetrics.ServiceName);
+                    metrics.AddMeter(WeatherApiMetrics.ServiceName)
                     // DISABLED TO REDUCE NOISE
                     //metrics.AddAspNetCoreInstrumentation();
                     //metrics.AddHttpClientInstrumentation();
